@@ -1,24 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import data from '../../database/data'
 
 
 export default function Questions() {
 
   const [checked, setChecked] = useState(undefined)
 
+  const question = data[0]
+
+  useEffect(() => {
+    console.log(data)
+  })
+
   function onselect() {
-    console.log('radio button')
+    console.log('radio clicked')
   }
 
   return (
     <div className='questions'>
-      <h2 className='text-light'>Question 1</h2>
+      <h2 className='text-light'>{question.question}</h2>
 
-      <ul>
-        <li>
-          <input type='radio' value={false} name='options' id='q1-option' onChange={onselect()} />
-          <label className='text-primary htmlFor="q1-option'>Options</label>
-          <div className='check checked'></div>
-        </li>
+      <ul key={question.id}>
+        {
+          question.options.map((q, i) => (
+            <li key={i}>
+              <input type='radio' value={false} name='options' id={`q${i}-option`} onChange={onselect()} />
+              <label className="text-primary" htmlFor={`q${i}-option`}>{q}</label>
+              <div className="check "></div>
+            </li>
+          ))
+        }
       </ul>
     </div>
   )
