@@ -3,26 +3,22 @@ import { useFetchQuestion } from '../../hooks/FetchQuestion'
 import { useSelector } from 'react-redux'
 
 
-export default function Questions() {
+export default function Questions({ onChecked }) {
 
   const [checked, setChecked] = useState(undefined)
   const [{ isLoading, apiData, serverError }] = useFetchQuestion()
 
-
-
   const questions = useSelector(state => state.questions.queue[state.questions.trace])
-  // const trace = useSelector(state => state.questions.trace)
+
 
   useEffect(() => {
-    console.log(questions)
-    // console.log(isLoading)
-    // console.log(apiData)
-    // console.log(serverError)
+    // console.log(questions)
   })
 
-  function onselect() {
-    // console.log('radio clicked')
+  function onSelect(i) {
+    onChecked(i)
   }
+
 
   if (isLoading) return <h3 className='text-light'>isLoading</h3>
   if (serverError) return <h3 className='text-light'>{serverError || "Unknown Error"}</h3>
@@ -35,9 +31,16 @@ export default function Questions() {
         {
           questions?.options.map((q, i) => (
             <li key={i}>
-              <input type='radio' value={false} name='options' id={`q${i}-option`} onChange={onselect()} />
-              <label className="text-primary" htmlFor={`q${i}-option`}>{q}</label>
-              <div className="check "></div>
+              <input
+                type="radio"
+                value={false}
+                name="options"
+                id={`q${i}-option`}
+                onChange={() => onSelect(i)}
+              />
+
+              <label className='text-primary' htmlFor={`q${i}-option`}>{q}</label>
+              <div className='check'></div>
             </li>
           ))
         }
