@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { useFetchQuestion } from '../../hooks/FetchQuestion'
-import { useSelector } from 'react-redux'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { updateResult } from '../../hooks/setResult'
 
 export default function Questions({ onChecked }) {
 
   const [checked, setChecked] = useState(undefined)
+  const { trace } = useSelector(state => state.questions)
   const [{ isLoading, apiData, serverError }] = useFetchQuestion()
 
   const questions = useSelector(state => state.questions.queue[state.questions.trace])
 
-
+  const dispatch = useDispatch()
   useEffect(() => {
-    // console.log(questions)
-  })
+    dispatch(updateResult({ trace, checked }))
+  }, [checked])
 
   function onSelect(i) {
     onChecked(i)
+    setChecked(i)
   }
 
 

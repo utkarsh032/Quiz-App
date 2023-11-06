@@ -28,7 +28,10 @@ export default function Quiz() {
       /** increase the trace value by one using MoveNextAction */
       dispatch(MoveNextQuestion());
 
-      dispatch(PushAnswer(check))
+
+      if (result.length <= trace) {
+        dispatch(PushAnswer(check))
+      }
     }
 
   }
