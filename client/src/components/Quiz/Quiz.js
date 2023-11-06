@@ -6,17 +6,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import { MoveNextQuestion } from '../../hooks/FetchQuestion'
 import { MovePrevQuestion } from '../../hooks/FetchQuestion'
 import { PushAnswer } from '../../hooks/setResult'
+import { Navigate } from 'react-router-dom'
 
 export default function Quiz() {
 
   const [check, setChecked] = useState(undefined)
 
-  const state = useSelector(state => state);
+  const result = useSelector(state => state.result.result);
   const { queue, trace } = useSelector(state => state.questions);
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log(state)
+    console.log(result)
   })
 
   /** next button event handler */
@@ -44,6 +45,11 @@ export default function Quiz() {
   function onChecked(check) {
     console.log(check)
     setChecked(check)
+  }
+
+  // finished exam after last question
+  if (result.length && result.length >= queue.length) {
+    return <Navigate to={'/result'} replace={true} ></Navigate>
   }
 
   return (

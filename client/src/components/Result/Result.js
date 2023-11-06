@@ -2,12 +2,20 @@ import React from 'react'
 import './Result.css'
 import { Link } from 'react-router-dom'
 import ResultTable from '../ResultTable.js/ResultTable'
+import { useDispatch } from 'react-redux'
 
-function onRetake() {
-  console.log('OnRetake')
-}
+import { resetAllAction } from '../../redux/question_reducer'
+import { resetResultAction } from '../../redux/result_reducer'
 
 export default function Result() {
+
+  const dispatch = useDispatch()
+
+  function onRestart() {
+    dispatch(resetAllAction())
+    dispatch(resetResultAction())
+  }
+
   return (
     <div className='container'>
       <h1 className='text text-light'>Result</h1>
@@ -52,7 +60,7 @@ export default function Result() {
 
       </div>
 
-      <div className='start'><Link className='btn' to={'/'} onClick={onRetake}>Retake</Link></div>
+      <div className='start'><Link className='btn' to={'/'} onClick={onRestart}>Retake</Link></div>
 
       <div className='container'>
         <ResultTable></ResultTable>
