@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Questions from '../Question/Questions'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,28 +16,24 @@ export default function Quiz() {
   const { queue, trace } = useSelector(state => state.questions);
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    console.log(result)
-  })
-
   /** next button event handler */
   function onNext() {
-    console.log('On next click')
-
     if (trace < queue.length) {
       /** increase the trace value by one using MoveNextAction */
       dispatch(MoveNextQuestion());
 
-
+      /** insert a new result in the array.  */
       if (result.length <= trace) {
         dispatch(PushAnswer(check))
       }
     }
+
+    /** reset the value of the checked variable */
+    setChecked(undefined)
   }
 
   /** Prev button event handler */
   function onPrev() {
-    console.log('On onPrev click')
     if (trace > 0) {
       /** decrease the trace value by one using MovePrevQuestion */
       dispatch(MovePrevQuestion());
@@ -49,9 +45,9 @@ export default function Quiz() {
     setChecked(check)
   }
 
-  // finished exam after last question
+  /** finished exam after the last question */
   if (result.length && result.length >= queue.length) {
-    return <Navigate to={'/result'} replace={true} ></Navigate>
+    return <Navigate to={'/result'} replace={true}></Navigate>
   }
 
   return (
