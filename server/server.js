@@ -4,7 +4,10 @@ import cors from 'cors'
 import { config } from 'dotenv'
 import router from './router/route.js'
 
+import connect from './database/connection.js'
+
 const app = express()
+
 
 // app middleware
 app.use(morgan("tiny"))
@@ -26,6 +29,15 @@ app.get('/', (req, res) => {
   }
 })
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`)
+connect().then(() => {
+  try {
+    app.listen(port, () => {
+      console.log(`Server connected on port ${port}`)
+    })
+  } catch (error) {
+    console.log('Can not connect to the server')
+
+  }
+}).catch(error => {
+  console.log("Invalid Database Connection")
 })
