@@ -1,8 +1,21 @@
 import { Router } from "express";
 const router = Router()
 
-router.get('/questions', (req, res) => {
-  res.json("questions api get request")
-})
+import * as controller from "../controllers/controller.js"
 
-export default router
+
+
+router.route('/questions')
+  .get(controller.getQuestions)
+  .post(controller.insertQuestions)
+  .delete(controller.dropQuestions)
+
+
+router.route('/result')
+  .get(controller.getResult)
+  .post(controller.storeResult)
+  .delete(controller.dropResult)
+
+
+
+export default router;
