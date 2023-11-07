@@ -1,25 +1,30 @@
-import express from 'express'
-import morgan from 'morgan'
-import cors from 'cors'
-import { config } from 'dotenv'
-import router from './router/route.js'
+import express from 'express';
+import morgan from 'morgan';
+import cors from 'cors';
+import { config } from 'dotenv';
+import router from './router/route.js';
 
-import connect from './database/connection.js'
+
+/** import connection file */
+import connect from './database/connection.js';
 
 const app = express()
 
 
-// app middleware
-app.use(morgan("tiny"))
-app.use(cors())
-app.use(express.json())
-config()
+/** app middlewares */
+app.use(morgan('tiny'));
+app.use(cors());
+app.use(express.json());
+config();s
 
-// application port
-const port = process.env.PORT || 8080
 
-// routes
-app.use("/api", router)
+/** appliation port */
+const port = process.env.PORT || 8080;
+
+
+/** routes */
+app.use('/api', router) /** apis */
+
 
 app.get('/', (req, res) => {
   try {
@@ -29,15 +34,16 @@ app.get('/', (req, res) => {
   }
 })
 
+
+/** start server only when we have valid connection */
 connect().then(() => {
   try {
     app.listen(port, () => {
-      console.log(`Server connected on port ${port}`)
+      console.log(`Server connected to http://localhost:${port}`)
     })
   } catch (error) {
-    console.log('Can not connect to the server')
-
+    console.log("Cannot connect to the server");
   }
 }).catch(error => {
-  console.log("Invalid Database Connection")
+  console.log("Invalid Database Connection");
 })
