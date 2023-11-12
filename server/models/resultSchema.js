@@ -1,8 +1,10 @@
-import mongoose, { mongo } from "mongoose";
-const { Schema } = mongoose
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
+
+/** result model */
 const resultModel = new Schema({
-  userName: { type: String },
+  username: { type: String },
   result: { type: Array, default: [] },
   attempts: { type: Number, default: 0 },
   points: { type: Number, default: 0 },
