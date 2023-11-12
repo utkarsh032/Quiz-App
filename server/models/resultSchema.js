@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 
-/** result model */
 const resultModel = new Schema({
   username: { type: String },
   result: { type: Array, default: [] },

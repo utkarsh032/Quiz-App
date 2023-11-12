@@ -4,12 +4,10 @@ import cors from 'cors';
 import { config } from 'dotenv';
 import router from './router/route.js';
 
-
 /** import connection file */
 import connect from './database/connection.js';
 
-const app = express()
-
+const app = express();
 
 /** app middlewares */
 app.use(morgan('tiny'));
@@ -17,33 +15,38 @@ app.use(cors());
 app.use(express.json());
 config();
 
-/** appliation port */
+/** application port */
 const port = process.env.PORT || 8080;
 
-
 /** routes */
-app.use('/api', router) /** apis */
-
+app.use('/api', router); /** APIs */
 
 app.get('/', (req, res) => {
   try {
-    res.json("Get Request")
+    res.json("Get Request");
   } catch (error) {
-    res.json(error)
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
-})
+});
 
-
-
-/** start server only when we have valid connection */
-connect().then(() => {
+/** start server only when we have a valid connection */
+const startServer = async () => {
   try {
+    await connect();
     app.listen(port, () => {
-      console.log(`Server connected to http://localhost:${port}`)
-    })
+      console.log(`Server connected to http://localhost:${port}`);
+    });
   } catch (error) {
-    console.log("Cannot connect to the server");
+    console.error("Error starting server:", error.message || error);
   }
-}).catch(error => {
-  console.log("Invalid Database Connection");
-})
+};
+
+/** Check if environment variables are properly configured */
+if (!process.env.PORT) {
+  console.error("Please set the PORT environment variable");
+  process.exit(1);
+}
+
+/** Start the server */
+startServer();
