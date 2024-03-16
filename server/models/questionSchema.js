@@ -1,10 +1,15 @@
 import mongoose from "mongoose";
+
 const { Schema } = mongoose;
 
-const questionModel = new Schema({
-    questions: { type: Array, default: [] },
-    answers: { type: Array, default: [] },
-    createdAt: { type: Date, default: Date.now },
+// Define the schema for the question model
+const questionSchema = new Schema({
+    questions: { type: Array, required: true, default: [] }, // Make questions required
+    answers: { type: Array, required: true, default: [] }, // Make answers required
+    createdAt: { type: Date, default: Date.now }
 });
 
-export default mongoose.model('Question', questionModel);
+// Create and export the "Question" model
+const Question = mongoose.model('Question', questionSchema);
+
+export default Question;

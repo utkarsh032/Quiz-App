@@ -14,7 +14,7 @@ export const resultReducer = createSlice({
       state.result.push(action.payload)
     },
     updateResultAction: (state, action) => {
-      const { trace, checked } = action.payload
+      const { trace, checked } = action.payload;
       state.result.fill(checked, trace, trace + 1)
     },
     resetResultAction: () => {
@@ -26,5 +26,6 @@ export const resultReducer = createSlice({
   }
 })
 
-export const { setUserId, pushResultAction, resetResultAction, updateResultAction } = resultReducer.actions
-export default resultReducer.reducer
+export const { setUserId, pushResultAction, resetResultAction, updateResultAction } = resultReducer.actions;
+
+export default resultReducer.reducer;
