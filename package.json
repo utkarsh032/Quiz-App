@@ -5,7 +5,9 @@
   "main": "index.js",
   "type":"module",
   "scripts": {
-    "start":"nodemon server/server.js"
+    "start": "set NODE_ENV=production&& node server/server.js",
+    "dev": "set NODE_ENV=development&& nodemon server/server.js",
+    "build": "npm install && npm install --prefix client && npm run build --prefix client"
   },
   "author": "Utkarsh Raj",
   "license": "ISC",

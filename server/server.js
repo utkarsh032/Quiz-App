@@ -8,6 +8,8 @@ import router from './router/route.js';
 import connect from './database/connection.js';
 
 const app = express();
+const _dirname = path.resolve();
+
 
 /** app middlewares */
 app.use(morgan('tiny'));
@@ -18,8 +20,11 @@ config();
 /** application port */
 const port = process.env.PORT || 8080;
 
+
 /** routes */
 app.use('/api', router); /** APIs */
+
+app.use(express.static(path.join(_dirname, "client/build")));
 
 app.get('/', (req, res) => {
   try {
@@ -28,6 +33,10 @@ app.get('/', (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(_dirname, "client/build", "index.html"));
 });
 
 /** start server only when we have a valid connection */
