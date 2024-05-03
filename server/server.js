@@ -9,7 +9,7 @@ import router from "./router/route.js";
 import connect from "./database/connection.js";
 
 const app = express();
-const _dirname = path.resolve();
+const __dirname = path.resolve();
 
 /** app middlewares */
 app.use(morgan("tiny"));
@@ -23,19 +23,17 @@ const port = process.env.PORT || 8080;
 /** routes */
 app.use("/api", router); /** APIs */
 
-app.use(express.static(path.join(_dirname, "client/build")));
+// Serve static files
+app.use(express.static(path.join(__dirname, "client/build")));
 
+// Define routes
 app.get("/", (req, res) => {
-  try {
-    res.json("Get Request");
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+  res.json("Get Request");
 });
 
+// Catch-all route to serve index.html
 app.get("*", (req, res) => {
-  res.sendFile(path.join(_dirname, "client/build", "index.html"));
+  res.sendFile(path.join(__dirname, "client/build", "index.html"));
 });
 
 /** start server only when we have a valid connection */
@@ -47,13 +45,14 @@ const startServer = async () => {
     });
   } catch (error) {
     console.error("Error starting server:", error.message || error);
+    process.exit(1); // Exit with non-zero code on error
   }
 };
 
 /** Check if environment variables are properly configured */
 if (!process.env.PORT) {
   console.error("Please set the PORT environment variable");
-  process.exit(1);
+  process.exit(1); // Exit with non-zero code if PORT is not defined
 }
 
 /** Start the server */
